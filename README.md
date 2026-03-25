@@ -1,5 +1,5 @@
 ### Dokumentasi screenshot
-Semua tugas ini dijalankan melalui terminal utama yang tersambung dengan kubernetes melalui kubeconfig dengan spesifikasi 3 VM Linux (1 Control dan 2 Worker). Dimana, saya menggunakan VM dari UTM pada perangkat MAC M1.
+Semua tugas ini dijalankan melalui terminal utama yang tersambung dengan kubernetes melalui kubeconfig dengan spesifikasi 3 VM Linux (1 Control dan 2 Worker) dengan worker saya memiliki disk 13 GB. Dimana, saya menggunakan VM dari UTM pada perangkat Macbook Air M1.
 
 Selain itu untuk OpenAPI dilihat melalui port forwarding dari laman vm ke mesin utama
 ![forwarding-1](./docs/forwarding-1.png)
