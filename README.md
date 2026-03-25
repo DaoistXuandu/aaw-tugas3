@@ -2,38 +2,38 @@
 Semua tugas ini dijalankan melalui terminal utama yang tersambung dengan kubernetes melalui kubeconfig dengan spesifikasi 3 VM Linux (1 Control dan 2 Worker).
 
 Selain itu untuk OpenAPI dilihat melalui port forwarding dari laman vm ke mesin utama
-[forwarding-1](./docs/forwarding-1.png)
-[forwarding-2](./docs/forwarding-2.png)
-[forwarding-3](./docs/forwarding-3.png)
-[forwarding-4](./docs/forwarding-4.png)
+![forwarding-1](./docs/forwarding-1.png)
+![forwarding-2](./docs/forwarding-2.png)
+![forwarding-3](./docs/forwarding-3.png)
+![forwarding-4](./docs/forwarding-4.png)
 
 #### OpenAPI Catalog Service
-[catalog-1](./docs/catalog-1.png)
-[catalog-2](./docs/catalog-2.png)
-[catalog-3](./docs/catalog-3.png)
+![catalog-1](./docs/catalog-1.png)
+![catalog-2](./docs/catalog-2.png)
+![catalog-3](./docs/catalog-3.png)
 
 #### OpenAPI Order Service
-[order-1](./docs/order-1.png)
-[order-2](./docs/order-2.png)
-[order-3](./docs/order-3.png)
-[order-4](./docs/order-4.png)
+![order-1](./docs/order-1.png)
+![order-2](./docs/order-2.png)
+![order-3](./docs/order-3.png)
+![order-4](./docs/order-4.png)
 
 #### OpenAPI Notification Service
 
-[notif-1](./docs/notif-1.png)
-[notif-2](./docs/notif-2.png)
-[notif-3](./docs/notif-3.png)
+![notif-1](./docs/notif-1.png)
+![notif-2](./docs/notif-2.png)
+![notif-3](./docs/notif-3.png)
 
 #### `kubectl get pods -o wide -n suilens-2306152506`
-[notif-3](./docs/wide.png)
+![notif-3](./docs/wide.png)
 
 #### `kubectl get all -n suilens-2306152506`
-[notif-3](./docs/all.png)
+![notif-3](./docs/all.png)
 
 #### `Frontend belum ada order`
-[web-1](./docs/web-0.png)
+![web-1](./docs/web-0.png)
 #### `Frontend sudah ada order`
-[web-2](./docs/web-1.png)
+![web-2](./docs/web-1.png)
 
 
 # suilens-microservice-tutorial
