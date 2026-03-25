@@ -5,6 +5,24 @@
       <v-divider></v-divider>
 
       <v-card-text class="py-6" style="min-height: 500px">
+        <v-alert
+          v-if="connectionError"
+          type="warning"
+          variant="tonal"
+          class="mb-4"
+        >
+          {{ connectionError }}
+        </v-alert>
+
+        <v-chip
+          size="small"
+          :color="isConnected ? 'success' : 'grey-darken-1'"
+          variant="flat"
+          class="mb-4"
+        >
+          {{ isConnected ? "WebSocket connected" : "WebSocket disconnected" }}
+        </v-chip>
+
         <div
           v-if="notifications.length === 0"
           class="text-center text-grey py-8"
@@ -24,11 +42,10 @@
             "
           >
             <p class="text-sm ma-0">
-              Order placed for {{ notification.data.lensName }} by
-              {{ notification.data.customerName }}
+              {{ notification.message }}
             </p>
             <p class="text-xs text-grey-darken-1 mt-1">
-              {{ formatTime(notification.timestamp) }}
+              {{ formatTime(notification.sentAt) }}
             </p>
           </div>
         </div>
@@ -46,9 +63,64 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+
+const API_BASE = import.meta.env.VITE_NOTIFICATION_API || "http://localhost:3003";
+const WS_URL = import.meta.env.VITE_NOTIFICATION_WS || toWsUrl(API_BASE);
+
+function toWsUrl(httpUrl) {
+  if (httpUrl.startsWith("https://")) {
+    return `${httpUrl.replace("https://", "wss://")}/ws/notifications`;
+  }
+  return `${httpUrl.replace("http://", "ws://")}/ws/notifications`;
+}
+
+let socket;
 
 const notifications = ref([]);
+const isConnected = ref(false);
+const connectionError = ref("");
+
+async function loadInitialNotifications() {
+  try {
+    const response = await fetch(`${API_BASE}/api/notifications`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch notifications");
+    }
+    const data = await response.json();
+    notifications.value = data;
+  } catch {
+    connectionError.value = "Gagal memuat notifikasi awal dari server.";
+  }
+}
+
+function connectWebSocket() {
+  socket = new WebSocket(WS_URL);
+
+  socket.onopen = () => {
+    isConnected.value = true;
+    connectionError.value = "";
+  };
+
+  socket.onclose = () => {
+    isConnected.value = false;
+  };
+
+  socket.onerror = () => {
+    connectionError.value = "Koneksi WebSocket bermasalah. Cek notification-service.";
+  };
+
+  socket.onmessage = (event) => {
+    try {
+      const payload = JSON.parse(event.data);
+      if (payload.event === "notification.created" && payload.data) {
+        notifications.value.unshift(payload.data);
+      }
+    } catch {
+      // Ignore non-JSON websocket payloads.
+    }
+  };
+}
 
 function formatTime(timestamp) {
   const date = new Date(timestamp);
@@ -62,4 +134,13 @@ function formatTime(timestamp) {
 function clearNotifications() {
   notifications.value = [];
 }
+
+onMounted(async () => {
+  await loadInitialNotifications();
+  connectWebSocket();
+});
+
+onBeforeUnmount(() => {
+  socket?.close();
+});
 </script>

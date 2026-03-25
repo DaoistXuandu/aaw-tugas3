@@ -1,13 +1,18 @@
 import amqplib from "amqplib";
 import { db } from "./db";
 import { notifications } from "./db/schema";
+import type { NotificationEvent } from "./realtime";
 
 const RABBITMQ_URL =
   process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672";
 const EXCHANGE_NAME = "suilens.events";
 const QUEUE_NAME = "notification-service.order-events";
 
-export async function startConsumer() {
+interface StartConsumerOptions {
+  onNotificationCreated?: (notification: NotificationEvent) => void;
+}
+
+export async function startConsumer(options: StartConsumerOptions = {}) {
   let retries = 0;
   const maxRetries = 10;
   const retryDelay = 2000;
@@ -34,12 +39,26 @@ export async function startConsumer() {
             const { orderId, customerName, customerEmail, lensName } =
               event.data;
 
-            await db.insert(notifications).values({
-              orderId,
-              type: "order_placed",
-              recipient: customerEmail,
-              message: `Hi ${customerName}, your rental order for ${lensName} has been placed successfully. Order ID: ${orderId}`,
-            });
+            const [notification] = await db
+              .insert(notifications)
+              .values({
+                orderId,
+                type: "order_placed",
+                recipient: customerEmail,
+                message: `Hi ${customerName}, your rental order for ${lensName} has been placed successfully. Order ID: ${orderId}`,
+              })
+              .returning();
+
+            if (notification) {
+              options.onNotificationCreated?.({
+                id: notification.id,
+                orderId: notification.orderId,
+                type: notification.type,
+                recipient: notification.recipient,
+                message: notification.message,
+                sentAt: notification.sentAt.toISOString(),
+              });
+            }
 
             console.log(`Notification recorded for order ${orderId}`);
           }

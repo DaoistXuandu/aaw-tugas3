@@ -104,6 +104,8 @@ services:
     environment:
       VITE_CATALOG_API: http://localhost:3001
       VITE_ORDER_API: http://localhost:3002
+      VITE_NOTIFICATION_API: http://localhost:3003
+      VITE_NOTIFICATION_WS: ws://localhost:3003/ws/notifications
 
 volumes:
   catalog_pgdata:
