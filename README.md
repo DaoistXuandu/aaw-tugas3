@@ -1,5 +1,5 @@
 ### Dokumentasi screenshot
-Semua tugas ini dijalankan melalui terminal utama yang tersambung dengan kubernetes melalui kubeconfig dengan spesifikasi 3 VM Linux (1 Control dan 2 Worker).
+Semua tugas ini dijalankan melalui terminal utama yang tersambung dengan kubernetes melalui kubeconfig dengan spesifikasi 3 VM Linux (1 Control dan 2 Worker). Dimana, saya menggunakan VM dari UTM pada perangkat MAC M1.
 
 Selain itu untuk OpenAPI dilihat melalui port forwarding dari laman vm ke mesin utama
 ![forwarding-1](./docs/forwarding-1.png)
@@ -41,8 +41,6 @@ Selain itu untuk OpenAPI dilihat melalui port forwarding dari laman vm ke mesin 
 Microservices tutorial implementation for Assignment 1 Part 2.2.
 
 ## Kubernetes Deployment (1 Control Plane + 2 Worker)
-
-Bagian ini berjalan pada 3 VM Linux (1 Control dan 2 Worker). Selain itu, dalam kasus ini saya membuat worker-2 dengan besar storage 13GB dan membagi load services ke kedua worker tanpa replika
 
 ### 1. Inisiasi cluster (kubeadm)
 Sebagaimana dilakukan pada tutorial

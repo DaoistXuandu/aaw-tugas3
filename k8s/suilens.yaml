@@ -23,8 +23,6 @@ spec:
       labels:
         app: catalog-db
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-1
       containers:
         - name: postgres
           image: postgres:16-alpine
@@ -70,8 +68,6 @@ spec:
       labels:
         app: order-db
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-1
       containers:
         - name: postgres
           image: postgres:16-alpine
@@ -117,8 +113,6 @@ spec:
       labels:
         app: notification-db
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-1
       containers:
         - name: postgres
           image: postgres:16-alpine
@@ -164,8 +158,6 @@ spec:
       labels:
         app: rabbitmq
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-2
       containers:
         - name: rabbitmq
           image: rabbitmq:3.13-management-alpine
@@ -203,8 +195,6 @@ spec:
       labels:
         app: catalog-service
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-2
       initContainers:
         - name: wait-catalog-db
           image: postgres:16-alpine
@@ -249,8 +239,6 @@ spec:
       labels:
         app: order-service
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-2
       initContainers:
         - name: wait-order-db
           image: postgres:16-alpine
@@ -305,8 +293,6 @@ spec:
       labels:
         app: notification-service
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-2
       initContainers:
         - name: wait-notification-db
           image: postgres:16-alpine
@@ -357,8 +343,6 @@ spec:
       labels:
         app: frontend
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-2
       containers:
         - name: frontend
           image: raihanakbartampansekali/suilens-frontend:latest
@@ -387,8 +371,6 @@ spec:
   template:
     spec:
       restartPolicy: OnFailure
-      nodeSelector:
-        kubernetes.io/hostname: worker-node-2
       containers:
         - name: seed
           image: raihanakbartampansekali/suilens-catalog-service:latest
